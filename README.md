@@ -11,6 +11,12 @@ NineGridLayout
 
  2. 使用方法
 
+ 引用：
+
+    compile 'com.w4lla.library.NineLayout'
+
+ 使用：
+
  在项目的layout文件中添加如下xml即可加入到布局文件
             <com.w4lle.library.NineGridlayout
                 android:layout_marginTop="8dp"
