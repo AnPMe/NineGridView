@@ -14,16 +14,16 @@ public class MainActivity extends ActionBarActivity {
     private ListView listView;
     private List<List<Image>> imagesList;
 
-    private String[][] images=new String[][]{{
-             "http://img4.duitang.com/uploads/item/201209/25/20120925201555_eUHEU.jpeg","640","960"}
-            ,{"file:///android_asset/img2.jpg","250","250"}
+    private String[][] images=new String[][]{
+            {"file:///android_asset/img2.jpg","250","250"}
+            ,{"http://img3.douban.com/view/photo/photo/public/p2249526036.jpg","640","960"}
             ,{"file:///android_asset/img3.jpg","250","250"}
             ,{"file:///android_asset/img4.jpg","250","250"}
             ,{"file:///android_asset/img5.jpg","250","250"}
             ,{"file:///android_asset/img6.jpg","250","250"}
             ,{"file:///android_asset/img7.jpg","250","250"}
             ,{"file:///android_asset/img8.jpg","250","250"}
-            ,{"http://img3.douban.com/view/photo/raw/public/p1708880537.jpg","1280","800"}
+            ,{"http://img4.douban.com/view/photo/photo/public/p2252689992.jpg","1280","800"}
     };
 
     @Override

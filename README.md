@@ -3,51 +3,103 @@ NineGridLayout
 
  1. 简介
 
-  这是一个用于实现像微信朋友圈和微博的类似的九宫格图片展示控件，通过自定义viewgroup实现，是用方便，只需要很简单的就可嵌入到项目中去。
-  
-  
-
+  这是一个用于实现像微信朋友圈和微博的类似的九宫格图片展示控件，通过自定义viewgroup实现，使用方便。
+  多图根据屏幕适配，单张图片时需要自己指定图片的宽高；
 
 ----------
 
 
  2. 使用方法
- 在项目的layout文件中添加如下xml即可加入到布局文件
 
-                <com.weixinninegridlayout.NineGridlayout
+ 在项目的layout文件中添加如下xml即可加入到布局文件
+            <com.w4lle.library.NineGridlayout
                 android:layout_marginTop="8dp"
                 android:id="@+id/iv_ngrid_layout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
 
-  因为大部分这类控件都是在listview里面用的，所以针对Listview的复用有针对性的优化，只需要在项目中调用NineGridlayout.setImagesData就可以实现图片的加载和显示。同时为了解耦合和，重写了一个CustomImageView嵌入了picasso图片加载库来加载图片。
+支持 padding 和margin
 
+Java Api :
+
+写好自己的Adapter继承自NineGridAdapter:
+
+    class Adapter extends NineGridAdapter {
+
+        public Adapter(Context context, List list) {
+            super(context, list);
+        }
+
+        @Override
+        public int getCount() {
+            return (list == null) ? 0 : list.size();
+        }
+
+        @Override
+        public String getUrl(int position) {
+            return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return (list == null) ? null : list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int i) {
+            ImageView iv = new ImageView(context);
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            Picasso.with(context).load(getUrl(i)).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
+            return iv;
+        }
+    }
+
+代码中使用 :
+
+    adapter = new Adapter(context, image);
+    viewHolder.ivMore.setAdapter(adapter);
+    viewHolder.ivMore.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
+        @Override
+        public void onItemClick(View view, int position) {
+            //do some thing
+            Log.d("onItemClick : " + position);
+        }
+    });
+
+
+其余API:
+
+    setsetGap //设置图片间隔
+    setDefaultWidth //设置单张图片时的宽度，默认 140 * density
+    setDefaultHeight //设置单张图片时的高度,默认 140 * density
 
 ----------
 
-
- 3. 效果展示
- 由于我用markdown嵌入图片发现大小不能调整，所以如果想要看跟多详情，可以去我的CSDN博客，地址：[自定义九宫格控件NineGridLayout ,实现微信朋友圈图片九宫格显示][1]
-
-
+3.效果
 
   ![效果1][2]
   ![效果2][3]
-   
+
   [1]: http://blog.csdn.net/u012650948/article/details/43638427
 
-  
+
   [3]: http://img.blog.csdn.net/20150208195246244?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMjY1MDk0OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center
 
 
-  
+
 ----------
 
 
  4. 协议
 
 >  /*
- * Copyright (C) 2015 panyihong
+ * Copyright (C) 2015 w4lle
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,5 +113,4 @@ NineGridLayout
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 

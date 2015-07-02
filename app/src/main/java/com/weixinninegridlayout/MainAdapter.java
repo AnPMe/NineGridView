@@ -3,6 +3,7 @@ package com.weixinninegridlayout;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,11 +107,20 @@ public class MainAdapter extends BaseAdapter {
         }
 
         @Override
-        public View getView(int i) {
-            ImageView iv = new ImageView(context);
+        public View getView(int i, View view) {
+            ImageView iv = null;
+            if (view != null && view instanceof ImageView) {
+                iv = (ImageView) view;
+            } else {
+                iv = new ImageView(context);
+            }
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            iv.setBackgroundColor(context.getResources().getColor((android.R.color.transparent)));
+            String url = getUrl(i);
             Picasso.with(context).load(getUrl(i)).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
+            if (!TextUtils.isEmpty(url)) {
+                iv.setTag(url);
+            }
             return iv;
         }
     }

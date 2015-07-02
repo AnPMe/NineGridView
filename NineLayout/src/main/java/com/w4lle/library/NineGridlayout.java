@@ -63,23 +63,29 @@ public class NineGridlayout extends ViewGroup {
         //初始化布局形状
         generateChildrenLayout(adapter.getCount());
         //这里做一个重用view的处理
-        if (oldCount == 0) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                View itemView = adapter.getView(i);
-                addView(itemView, generateDefaultLayoutParams());
-            }
-        } else {
+//        if (oldCount == 0) {
+        removeAllViews();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View itemView = adapter.getView(i, null);
+            addView(itemView, generateDefaultLayoutParams());
+        }
+//        }
+         /*else {
             //以前添加过view
             int newViewCount = adapter.getCount();
             if (oldCount > newViewCount) {
                 removeViews(newViewCount - 1, oldCount - newViewCount);
+                for (int i = 0; i < newViewCount - 1; i++) {
+                    adapter.getView(i, getChildAt(i));
+                }
             } else if (oldCount < newViewCount) {
                 for (int i = 0; i < newViewCount - oldCount; i++) {
-                    View itemView = adapter.getView(i);
+                    View itemView = adapter.getView(i, null);
                     addView(itemView, generateDefaultLayoutParams());
                 }
             }
-        }
+        }*/
+
         oldCount = adapter.getCount();
         requestLayout();
     }

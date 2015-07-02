@@ -26,5 +26,5 @@ public abstract class NineGridAdapter {
 
     public abstract long getItemId(int position);
 
-    public abstract View getView(int i);
+    public abstract View getView(int i, View view);
 }
