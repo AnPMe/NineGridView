@@ -13,9 +13,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 
-/**
- * Created by Pan_ on 2015/2/2.
- */
 public class CustomImageView extends ImageView {
     private String url;
     private boolean isAttachedToWindow;

@@ -1,19 +1,23 @@
 package com.weixinninegridlayout;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+import com.w4lle.library.NineGridAdapter;
+import com.w4lle.library.NineGridlayout;
 
 import java.util.List;
-
-/**
- * Created by Pan_ on 2015/2/3.
- */
 public class MainAdapter extends BaseAdapter {
     private Context context;
     private List<List<Image>> datalist;
+    private NineGridAdapter adapter;
 
     public MainAdapter(Context context, List<List<Image>> datalist) {
         this.context = context;
@@ -43,7 +47,6 @@ public class MainAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_ninegridlayout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.ivMore = (NineGridlayout) convertView.findViewById(R.id.iv_ngrid_layout);
-            viewHolder.ivOne = (CustomImageView) convertView.findViewById(R.id.iv_oneimage);
 
             convertView.setTag(viewHolder);
         } else {
@@ -51,54 +54,64 @@ public class MainAdapter extends BaseAdapter {
         }
         if (itemList.isEmpty() || itemList.isEmpty()) {
             viewHolder.ivMore.setVisibility(View.GONE);
-            viewHolder.ivOne.setVisibility(View.GONE);
-        } else if (itemList.size() == 1) {
-            viewHolder.ivMore.setVisibility(View.GONE);
-            viewHolder.ivOne.setVisibility(View.VISIBLE);
-
-            handlerOneImage(viewHolder, itemList.get(0));
         } else {
             viewHolder.ivMore.setVisibility(View.VISIBLE);
-            viewHolder.ivOne.setVisibility(View.GONE);
-
-            viewHolder.ivMore.setImagesData(itemList);
+            handlerOneImage(viewHolder, itemList);
         }
 
         return convertView;
     }
 
-    private void handlerOneImage(ViewHolder viewHolder, Image image) {
-        int totalWidth;
-        int imageWidth;
-        int imageHeight;
-        ScreenTools screentools = ScreenTools.instance(context);
-        totalWidth = screentools.getScreenWidth() - screentools.dip2px(80);
-        imageWidth = screentools.dip2px(image.getWidth());
-        imageHeight = screentools.dip2px(image.getHeight());
-        if (image.getWidth() <= image.getHeight()) {
-            if (imageHeight > totalWidth) {
-                imageHeight = totalWidth;
-                imageWidth = (imageHeight * image.getWidth()) / image.getHeight();
+    private void handlerOneImage(ViewHolder viewHolder, List<Image> image) {
+        adapter = new Adapter(context, image);
+        viewHolder.ivMore.setAdapter(adapter);
+        viewHolder.ivMore.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //do some thing
+                L.d("onItemClick : " + position);
             }
-        } else {
-            if (imageWidth > totalWidth) {
-                imageWidth = totalWidth;
-                imageHeight = (imageWidth * image.getHeight()) / image.getWidth();
-            }
-        }
-        ViewGroup.LayoutParams layoutparams = viewHolder.ivOne.getLayoutParams();
-        layoutparams.height = imageHeight;
-        layoutparams.width = imageWidth;
-        viewHolder.ivOne.setLayoutParams(layoutparams);
-        viewHolder.ivOne.setClickable(true);
-        viewHolder.ivOne.setScaleType(android.widget.ImageView.ScaleType.FIT_XY);
-        viewHolder.ivOne.setImageUrl(image.getUrl());
-
+        });
     }
 
 
     class ViewHolder {
         public NineGridlayout ivMore;
-        public CustomImageView ivOne;
+    }
+
+    class Adapter extends NineGridAdapter {
+
+        public Adapter(Context context, List list) {
+            super(context, list);
+        }
+
+        @Override
+        public int getCount() {
+            return (list == null) ? 0 : list.size();
+        }
+
+        @Override
+        public String getUrl(int position) {
+            return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return (list == null) ? null : list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int i) {
+            ImageView iv = new ImageView(context);
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
+            Picasso.with(context).load(getUrl(i)).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
+            return iv;
+        }
     }
 }
