@@ -1,7 +1,7 @@
 NineGridLayout
 --------------
 
- 1. 简介
+1. 简介
 
   这是一个用于实现像微信朋友圈和微博的类似的九宫格图片展示控件，通过自定义viewgroup实现，使用方便。
   多图根据屏幕适配，单张图片时需要自己指定图片的宽高；
@@ -9,7 +9,7 @@ NineGridLayout
 ----------
 
 
- 2. 使用方法
+2. 使用方法
 
  引用：
 
@@ -18,6 +18,7 @@ NineGridLayout
  使用：
 
  在项目的layout文件中添加如下xml即可加入到布局文件
+
             <com.w4lle.library.NineGridlayout
                 android:layout_marginTop="8dp"
                 android:id="@+id/iv_ngrid_layout"
