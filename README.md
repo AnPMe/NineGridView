@@ -13,7 +13,7 @@ NineGridLayout
 
  引用：
 
-    compile 'com.w4lle.library.NineLayout'
+    compile 'com.w4lle.library:NineLayout:1.0.0'
 
  使用：
 
