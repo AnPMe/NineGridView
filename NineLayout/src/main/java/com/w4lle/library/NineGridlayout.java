@@ -87,7 +87,7 @@ public class NineGridlayout extends ViewGroup {
         }*/
 
         oldCount = adapter.getCount();
-        requestLayout();
+        //requestLayout();
     }
 
     @Override
